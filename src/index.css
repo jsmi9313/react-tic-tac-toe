@@ -5,7 +5,7 @@ body {
 }
 
 ol, ul {
-  padding-left: 30px;
+  padding-left: 20px;
 }
 
 .board-row:after {
@@ -21,13 +21,14 @@ ol, ul {
 .square {
   background: #fff;
   border: 1px solid #999;
+  border-width: 0px 1px 1px 0px;
+  color: #FF0000;
+  margin: 5px;
   float: left;
   font-size: 24px;
   font-weight: bold;
   line-height: 34px;
   height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
   padding: 0;
   text-align: center;
   width: 34px;
@@ -43,9 +44,25 @@ ol, ul {
 
 .game {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .game-info {
-  margin-left: 20px;
+  margin-left: 3px;
+  margin-top: 10px;
+}
+
+li button {
+  width: 150px;
+  border: 0px solid #888;
+  border-width: 0px 1px 1px 0px;
+  margin: 3px 0px;
+}
+
+li button:focus {
+  background-color: #888;
+}
+
+.game-board {
+  margin-left: 30px;
 }

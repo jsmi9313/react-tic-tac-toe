@@ -64,8 +64,9 @@ class Game extends React.Component {
     const current = history[history.length - 1];
     const squares = current.squares.slice();
     const winner = calculateWinner(current.squares);
+    const gameOver = calculateGameOver(current.squares);
 
-    if (winner || squares[i]) {
+    if (gameOver || winner || squares[i]) {
       return;
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
@@ -89,6 +90,7 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
+    const gameOver = calculateGameOver(current.squares);
 
     const moves = history.map((step, move) => {
       const desc = move ? `Go to move #${move}.` : `Go to game start.`
@@ -106,6 +108,8 @@ class Game extends React.Component {
     let status;
     if (winner) {
       status = 'Winner: ' + winner;
+    } else if (gameOver) {
+      status = 'No Winner, Game Over.';
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
@@ -153,4 +157,9 @@ function calculateWinner(squares) {
     }
   }
   return null;
+}
+
+function calculateGameOver(squares) {
+  let isFull = squares.every(x=>x!==null);
+  return isFull;
 }
