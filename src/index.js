@@ -201,26 +201,33 @@ class Game extends React.Component {
 
     return (
       <div className="game">
-        <div className="game-board">
-          <Board
-            squares={current.squares}
-            onClick={(i) => this.handleClick(i)}
-            bgCol={squareColours}
-          />
-
+        <div className="centering-wrapper">
+          <div className="game-board centering-target">
+            <Board
+              squares={current.squares}
+              onClick={(i) => this.handleClick(i)}
+              bgCol={squareColours}
+            />
+          </div>
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <div>
-            <RestartToggle
-              onClick={() => this.handleRestartClick()}
-            />
-          </div>
-          <div>
-            <HistoryToggle
-              onClick={() => this.handleHistoryClick()}
-              show = {this.state.showHistory}
-            />
+          <div className="centering-wrapper">
+            <div className="centering-target">
+              <div className="spacing-wrapper">
+                <div className="spacing-target">
+                  <RestartToggle
+                    onClick={() => this.handleRestartClick()}
+                  />
+                </div>
+                <div className="spacing-target">
+                  <HistoryToggle
+                    onClick={() => this.handleHistoryClick()}
+                    show = {this.state.showHistory}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
           <ol style={{display: this.state.showHistory ? "inline-block" : "none",}}>{this.state.sortAsc ? moves.slice(0).reverse() : moves}</ol>
           <div>
