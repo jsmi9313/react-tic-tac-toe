@@ -2,6 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+function DirectionToggle(props){
+  return (
+    <button
+      className="direction-toggle"
+      onClick={props.onClick}
+    >
+      Switch Order
+    </button>
+  )
+}
+
 function Square(props) {
   return (
     <button 
@@ -58,6 +69,7 @@ class Game extends React.Component {
       }],
       xIsNext: true,
       stepNumber: 0,
+      sortAsc: true,
     };
   }
   
@@ -82,6 +94,13 @@ class Game extends React.Component {
     });
   }
 
+  handleSortClick(){
+    const sortAsc = !this.state.sortAsc
+    this.setState({
+      sortAsc: sortAsc,
+    })
+  }
+
   jumpTo(step) {
     this.setState({
       stepNumber: step,
@@ -90,7 +109,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const history = this.state.history;
+    let history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
     // const winner = results[0];
@@ -99,7 +118,7 @@ class Game extends React.Component {
     const moves = history.map((step, move) => {
       const desc = move ? `Go to move #${move}.` : `Go to game start.`
       return (
-        <li key={move}>
+        <li key={desc.toLocaleLowerCase().replace(/[^A-Z0-9]/ig, "_")}>
           <button 
             onClick={() => this.jumpTo(move)}
           >
@@ -114,7 +133,7 @@ class Game extends React.Component {
     if (winner) {
       status = 'Winner: ' + winner[0];
       squareColours = squareColours.map((val, idx)=>{
-        if(winner.includes(idx)){return "#ffcb2a"}
+        if(winner.includes(idx)){return "#ffe873"}
         else {return "#FFF"}});
     } else if (gameOver) {
       status = 'No Winner, Game Over.';
@@ -134,8 +153,11 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <ol>{this.state.sortAsc ? moves.slice(0).reverse() : moves}</ol>
         </div>
+        <DirectionToggle
+          onClick={() => this.handleSortClick()}
+        />
       </div>
     );
   }

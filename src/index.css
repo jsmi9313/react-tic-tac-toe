@@ -52,17 +52,21 @@ ol, ul {
   margin-top: 10px;
 }
 
-li button {
+button {
   width: 150px;
   border: 0px solid #888;
   border-width: 0px 1px 1px 0px;
   margin: 3px 0px;
 }
 
-li button:focus {
+button:focus {
   background-color: #888;
 }
 
 .game-board {
   margin-left: 30px;
+}
+
+.direction-toggle {
+  margin-left: 23px;
 }
