@@ -111,16 +111,30 @@ class Game extends React.Component {
   render() {
     let history = this.state.history;
     const current = history[this.state.stepNumber];
+    
     const winner = calculateWinner(current.squares);
     // const winner = results[0];
     const gameOver = calculateGameOver(current.squares);
 
     const moves = history.map((step, move) => {
-      const desc = move ? `Go to move #${move}.` : `Go to game start.`
+      let changeLog, moveIdx;
+      // Get the index position of the new move
+      if (move){ //Make sure not game start
+        changeLog = history[move].squares.map((_var, idx) => {return (_var!==history[move-1].squares[idx])})
+        moveIdx = changeLog.indexOf(true);
+      }
+      
+      const desc = move ? 
+      `Move #${move}: ${move%2 ? 'X' : 'O'} at (${1+Math.floor(moveIdx/3)},${1+(moveIdx%3)})` 
+      : 
+      `Game Start.`
       return (
-        <li key={desc.toLocaleLowerCase().replace(/[^A-Z0-9]/ig, "_")}>
+        <li 
+          key={desc.toLocaleLowerCase().replace(/[^A-Z0-9]/ig, "_")}  
+        >
           <button 
             onClick={() => this.jumpTo(move)}
+            style={(move==this.state.stepNumber) ? {color: "#FF0000"}: {}}
           >
             {desc}
           </button>
