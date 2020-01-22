@@ -7,8 +7,31 @@ function DirectionToggle(props){
     <button
       className="direction-toggle"
       onClick={props.onClick}
+      style={props.style}
     >
       Switch Order
+    </button>
+  )
+}
+
+function HistoryToggle(props){
+  return (
+    <button
+      className="history-toggle"
+      onClick={props.onClick}
+    >
+      {props.show ? "Hide History" : "Show History"}
+    </button>
+  )
+}
+
+function RestartToggle(props){
+  return (
+    <button
+      className="restart-toggle"
+      onClick={props.onClick}
+    >
+      New Game
     </button>
   )
 }
@@ -70,6 +93,7 @@ class Game extends React.Component {
       xIsNext: true,
       stepNumber: 0,
       sortAsc: true,
+      showHistory: false,
     };
   }
   
@@ -94,10 +118,30 @@ class Game extends React.Component {
     });
   }
 
+  handleHistoryClick(){
+    const showHistory = !this.state.showHistory
+    this.setState({
+      showHistory: showHistory,
+    })
+  }
+
   handleSortClick(){
     const sortAsc = !this.state.sortAsc
     this.setState({
       sortAsc: sortAsc,
+    })
+  }
+
+  handleRestartClick(){
+    this.setState({
+      history: [{
+        squares: Array(9).fill(null),
+      }],
+      xIsNext: true,
+      stepNumber: 0,
+      // Don't want to edit these.
+      // sortAsc: true,
+      // showHistory: true,
     })
   }
 
@@ -167,11 +211,25 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{this.state.sortAsc ? moves.slice(0).reverse() : moves}</ol>
+          <div>
+            <RestartToggle
+              onClick={() => this.handleRestartClick()}
+            />
+          </div>
+          <div>
+            <HistoryToggle
+              onClick={() => this.handleHistoryClick()}
+              show = {this.state.showHistory}
+            />
+          </div>
+          <ol style={{display: this.state.showHistory ? "inline-block" : "none",}}>{this.state.sortAsc ? moves.slice(0).reverse() : moves}</ol>
+          <div>
+            <DirectionToggle
+              onClick={() => this.handleSortClick()}
+              style={{display: this.state.showHistory ? "inline-block" : "none",}}
+            />
+          </div>
         </div>
-        <DirectionToggle
-          onClick={() => this.handleSortClick()}
-        />
       </div>
     );
   }
