@@ -1,11 +1,41 @@
+:root {
+  --bgd-main: #2C3F50;
+  --txt-main: #FFFFFF;
+  --bgd-square: transparent;
+  /* --bgd-square-win: #27AE60; */
+  --bgd-square-win: transparent;
+  --txt-square-win: #27AE60;
+  --brd-square: #495B6F;
+  --txt-square: #FFFFFF;
+  --bgd-btn: #27AE60;
+  --bgd-btn-clicked: #e74c3c;
+  --brd-btn: #27AE60;
+  --txt-btn: #FFFFFF;
+  --brd-width-square: 5px;
+  --bgd-history-btn: #495B6F;
+}
+
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
-  background-color: #BBB;
+  font: 34px "Century Gothic", Futura, sans-serif;
+  background-color: var(--bgd-main);
+  color: var(--txt-main);
   margin: 20px;
 }
 
 ol, ul {
-  padding-left: 20px;
+  /* padding-left: 20px; */
+  padding-inline-start: 0px;
+  font: 12px "Century Gothic", Futura, sans-serif;
+}
+
+ol button, .direction-toggle {
+  font: 12px "Century Gothic", Futura, sans-serif;
+  margin: 0px;
+  padding: 0px;
+  border: 1px solid var(--bgd-main);
+  height: 24px;
+  background-color: var(--bgd-history-btn);
+  border-radius: 0px;
 }
 
 .board-row:after {
@@ -19,19 +49,30 @@ ol, ul {
 }
 
 .square {
-  background: #fff;
-  border: 1px solid #999;
-  border-width: 0px 1px 1px 0px;
-  color: #FF0000;
-  margin: 5px;
+  /* background: transparent;  */ /*SET IN JS*/
+  border: 0px solid var(--brd-square);
+  border-radius: 0px;
+  color: var(--txt-square);
   float: left;
-  font-size: 24px;
+  font-size: 70px;
   font-weight: bold;
   line-height: 34px;
-  height: 34px;
-  padding: 0;
   text-align: center;
-  width: 34px;
+  margin: 0px;
+  padding: 0px;
+  width: 150px;
+  height: 150px;
+  box-sizing: content-box
+}
+
+.square.row2{
+  border-top-width: var(--brd-width-square);
+  border-bottom-width: var(--brd-width-square);
+}
+
+.square.col2{
+  border-right-width: var(--brd-width-square);
+  border-left-width: var(--brd-width-square);
 }
 
 .square:focus {
@@ -55,9 +96,18 @@ ol, ul {
 
 button {
   width: 150px;
-  border: 0px solid #888;
-  border-width: 0px 1px 1px 0px;
-  margin: 3px 0px;
+  height: 40px;
+  border-radius: 4px;
+  color: var(--txt-btn);
+  font: 16px "Century Gothic", Futura, sans-serif;
+  background-color: var(--bgd-btn);
+  /* border: 0px solid #888; */
+  border-width: 0px;
+  margin: 0px;
+}
+
+button:focus {
+  outline:0;
 }
 
 .game-board {
@@ -82,4 +132,13 @@ button {
   justify-content: space-between;
   width: 360px;
 }
+
+.game-info div {
+  margin-top: 40px;
+}
+
+.game-info div div{
+  margin-top: 0px;
+}
+
 

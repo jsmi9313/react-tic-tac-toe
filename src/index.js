@@ -2,14 +2,26 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+let styleGrabber = window.getComputedStyle(document.documentElement);
+let cssStyles = {
+  'bgd-main': styleGrabber.getPropertyValue('--bgd-main'),
+  'bgd-square': styleGrabber.getPropertyValue('--bgd-square'),
+  'txt-square': styleGrabber.getPropertyValue('--txt-square'),
+  'bgd-square-win': styleGrabber.getPropertyValue('--bgd-square-win'),
+  'txt-square-win': styleGrabber.getPropertyValue('--txt-square-win'),
+  'bgd-btn-clicked': styleGrabber.getPropertyValue('--bgd-btn-clicked'),
+  'bgd-btn': styleGrabber.getPropertyValue('--bgd-btn'),
+}
+
 function DirectionToggle(props){
+  console.log(props.sortAsc)
   return (
     <button
       className="direction-toggle"
       onClick={props.onClick}
       style={props.style}
     >
-      Switch Order
+      {props.sortAsc? "Ascending Order" : "Descending Order"} 
     </button>
   )
 }
@@ -19,6 +31,7 @@ function HistoryToggle(props){
     <button
       className="history-toggle"
       onClick={props.onClick}
+      style={props.show ? {backgroundColor: cssStyles["bgd-btn-clicked"],} : {}}
     >
       {props.show ? "Hide History" : "Show History"}
     </button>
@@ -37,11 +50,15 @@ function RestartToggle(props){
 }
 
 function Square(props) {
+  let row = 1+Math.floor(props.position/3), col=1+(props.position%3);
   return (
     <button 
-      className="square"
+      className={`square row${row} col${col}`}
       onClick={props.onClick}
-      style={{backgroundColor: props.bgCol,}}
+      style={{
+        backgroundColor: props.bgdCol,
+        color: props.txtCol,
+      }}
     >
       {props.value}
     </button>
@@ -50,12 +67,14 @@ function Square(props) {
 
 class Board extends React.Component {
 
-  renderSquare(i, bgCol) {
+  renderSquare(idx, bgdCol) {
     return (
       <Square
-        value={this.props.squares[i]}
-        onClick={() => this.props.onClick(i)}
-        bgCol={this.props.bgCol[i]}
+        value={this.props.squares[idx]}
+        onClick={() => this.props.onClick(idx)}
+        bgdCol={this.props.bgdCol[idx]}
+        txtCol={this.props.txtCol[idx]}
+        position = {idx}
       />
     );
   }
@@ -169,7 +188,7 @@ class Game extends React.Component {
       }
       
       const desc = move ? 
-      `Move #${move}: ${move%2 ? 'X' : 'O'} at (${1+Math.floor(moveIdx/3)},${1+(moveIdx%3)})` 
+      `${move%2 ? 'X' : 'O'} at (${1+Math.floor(moveIdx/3)},${1+(moveIdx%3)})` 
       : 
       `Game Start.`
       return (
@@ -178,7 +197,7 @@ class Game extends React.Component {
         >
           <button 
             onClick={() => this.jumpTo(move)}
-            style={(move==this.state.stepNumber) ? {color: "#FF0000"}: {}}
+            style={(move===this.state.stepNumber) ? {color: cssStyles["bgd-btn"]}: {}}
           >
             {desc}
           </button>
@@ -187,14 +206,18 @@ class Game extends React.Component {
     });
 
     let status;
-    let squareColours = Array(9).fill("#FFF");
+    let squareBgdColours = Array(9).fill(cssStyles["bgd-square"]);
+    let squareTxtColours = Array(9).fill(cssStyles["txt-square"]);
     if (winner) {
-      status = 'Winner: ' + winner[0];
-      squareColours = squareColours.map((val, idx)=>{
-        if(winner.includes(idx)){return "#ffe873"}
-        else {return "#FFF"}});
+      status = `${winner[0]} Wins!`;
+      squareBgdColours = squareBgdColours.map((val, idx)=>{
+        if(winner.includes(idx)){return cssStyles["bgd-square-win"]}
+        else {return cssStyles["bgd-square"]}});
+      squareTxtColours = squareTxtColours.map((val, idx)=>{
+        if(winner.includes(idx)){return cssStyles["txt-square-win"]}
+        else {return cssStyles["txt-square"]}});
     } else if (gameOver) {
-      status = 'No Winner, Game Over.';
+      status = 'Draw!';
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
@@ -206,7 +229,8 @@ class Game extends React.Component {
             <Board
               squares={current.squares}
               onClick={(i) => this.handleClick(i)}
-              bgCol={squareColours}
+              bgdCol={squareBgdColours}
+              txtCol={squareTxtColours}
             />
           </div>
         </div>
@@ -229,12 +253,15 @@ class Game extends React.Component {
               </div>
             </div>
           </div>
-          <ol style={{display: this.state.showHistory ? "inline-block" : "none",}}>{this.state.sortAsc ? moves.slice(0).reverse() : moves}</ol>
-          <div>
-            <DirectionToggle
-              onClick={() => this.handleSortClick()}
-              style={{display: this.state.showHistory ? "inline-block" : "none",}}
-            />
+          <div className="history-container">
+            <ol style={{display: this.state.showHistory ? "inline-block" : "none",}}>{this.state.sortAsc ? moves.slice(0).reverse() : moves}</ol>
+            <div>
+              <DirectionToggle
+                onClick={() => this.handleSortClick()}
+                style={{display: this.state.showHistory ? "inline-block" : "none",}}
+                sortAsc={this.state.sortAsc}
+              />
+            </div>
           </div>
         </div>
       </div>
