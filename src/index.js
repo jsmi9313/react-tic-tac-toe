@@ -14,7 +14,6 @@ let cssStyles = {
 }
 
 function DirectionToggle(props){
-  console.log(props.sortAsc)
   return (
     <button
       className="direction-toggle"
@@ -33,7 +32,7 @@ function HistoryToggle(props){
       onClick={props.onClick}
       style={props.show ? {backgroundColor: cssStyles["bgd-btn-clicked"],} : {}}
     >
-      {props.show ? "Hide History" : "Show History"}
+      {props.show ? "Hide Moves" : "Show Moves"}
     </button>
   )
 }
