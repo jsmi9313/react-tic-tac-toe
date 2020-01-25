@@ -219,6 +219,7 @@ class Game extends React.Component {
       status = 'Draw!';
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+      // status = `${this.state.xIsNext ? 'X' : 'O'}'s Turn`;
     }
 
     return (
